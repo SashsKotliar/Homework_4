@@ -1,6 +1,9 @@
 import java.util.Scanner;
 
 public class Main {
+    public static final int SIGN_UP = 1;
+    public static final int LOG_IN = 2;
+    public static final int FINISH = 3;
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         RealEstate r = new RealEstate();
@@ -10,13 +13,13 @@ public class Main {
             System.out.println("If you want to log in - press 2.");
             System.out.println("If you want to finish - press 3.");
             choice = scanner.nextInt();
-            if (choice == 1){
+            if (choice == SIGN_UP){
                 r.createUser();
-            } else if (choice == 2){
+            } else if (choice == LOG_IN){
                 r.userLogIn();
-            } else if (choice != 3){
+            } else if (choice != FINISH){
                 System.out.println("Invalid choice");
             }
-        } while (choice != 3);
+        } while (choice != FINISH);
     }
 }

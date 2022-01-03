@@ -4,6 +4,22 @@ import java.util.Scanner;
 
 public class RealEstate {
     public static final int SKIP = -999;
+    public static final int PHONE_NUMBER_LENGTH = 10;
+    public static final int REGULAR_USER_LIMIT = 3;
+    public static final int MEDIATOR_LIMIT = 10;
+    public static final int MEDIATOR = 1;
+    public static final int REGULAR_USER = 2;
+    public static final int REGULAR_APARTMENT = 1;
+    public static final int PENTHOUSE = 2;
+    public static final int PRIVATE_HOUSE = 3;
+    public static final int FOR_RENT = 1;
+    public static final int FOR_SALE = 2;
+    public static final int POST_NEW_PROPERTY = 1;
+    public static final int DELETE_POSTED_PROPERTY = 2;
+    public static final int SHOW_ALL_PROPERTIES = 3;
+    public static final int SHOW_ALL_USERS_PROPERTIES = 4;
+    public static final int SEARCH_FOR_PROPERTY = 5;
+    public static final int GO_TO_MAIN_MENU = 6;
     private User[] users;
     private Property[] properties;
     private final Address[] addresses;
@@ -107,7 +123,7 @@ public class RealEstate {
 
     public boolean validNumber(String phoneNumberToCheck) {
         boolean validNumber = true;
-        if (phoneNumberToCheck.length() != 10) {
+        if (phoneNumberToCheck.length() != PHONE_NUMBER_LENGTH) {
             validNumber = false;
         } else if (phoneNumberToCheck.charAt(0) != '0' || phoneNumberToCheck.charAt(1) != '5') {
             validNumber = false;
@@ -130,9 +146,9 @@ public class RealEstate {
         System.out.println("For mediator - press 1.");
         System.out.println("For regular user - press 2.");
         int userChoice = scanner.nextInt();
-        if (userChoice == 1) {
+        if (userChoice == MEDIATOR) {
             mediator = true;
-        } else if (userChoice != 2) {
+        } else if (userChoice != REGULAR_USER) {
             System.out.println("Invalid choice.");
             ifMediator();
         }
@@ -175,20 +191,20 @@ public class RealEstate {
                 System.out.println("To log out and go to main menu - press 6.");
                 choice = scanner.nextInt();
                 switch (choice) {
-                    case 1:
+                    case POST_NEW_PROPERTY:
                         addNewProperty(user);
                         break;
-                    case 2: removeProperty(user);
+                    case DELETE_POSTED_PROPERTY: removeProperty(user);
                         break;
-                    case 3:
+                    case SHOW_ALL_PROPERTIES:
                         printAllProperties();
                         break;
-                    case 4: printUserProperties(user);
+                    case SHOW_ALL_USERS_PROPERTIES: printUserProperties(user);
                         break;
-                    case 5: search();
+                    case SEARCH_FOR_PROPERTY: search();
                         break;
                 }
-            } while (choice != 6);
+            } while (choice != GO_TO_MAIN_MENU);
         }
         return user;
     }
@@ -220,16 +236,16 @@ public class RealEstate {
             System.out.println("For penthouse press 2");
             System.out.println("For private house press 3");
             type = scanner.nextInt();
-            if (type == 1) {
+            if (type == REGULAR_APARTMENT) {
                 propertyType = "regular apartment";
-            } else if (type == 2) {
+            } else if (type == PENTHOUSE) {
                 propertyType = "penthouse";
-            } else if (type == 3) {
+            } else if (type == PRIVATE_HOUSE) {
                 propertyType = "private house";
             } else {
                 System.out.println("Invalid type. Enter your choice again.");
             }
-        } while (type != 1 && type != 2 && type != 3);
+        } while (type != REGULAR_APARTMENT && type != PENTHOUSE && type != PRIVATE_HOUSE);
         return propertyType;
     }
 
@@ -299,11 +315,11 @@ public class RealEstate {
     public boolean postNewProperty(User user) {
         boolean allowedToAddProperty = true;
         if (Objects.equals(user.getUserType(), "Mediator")) {
-            if (usersPropertiesCounter(user) == 10) {
+            if (usersPropertiesCounter(user) == MEDIATOR_LIMIT) {
                 allowedToAddProperty = false;
             }
         } else {
-            if (usersPropertiesCounter(user) == 3) {
+            if (usersPropertiesCounter(user) == REGULAR_USER_LIMIT) {
                 allowedToAddProperty = false;
             }
         }
@@ -505,11 +521,11 @@ public class RealEstate {
         int forRentChoice;
         do {
             forRentChoice= scanner.nextInt();
-            if (forRentChoice != 1 && forRentChoice != 2 && forRentChoice != SKIP){
+            if (forRentChoice != FOR_RENT && forRentChoice != FOR_SALE && forRentChoice != SKIP){
                 System.out.println("Invalid choice");
             }
-        } while (forRentChoice != 1 && forRentChoice != 2 && forRentChoice != SKIP);
-        if (forRentChoice == 1){
+        } while (forRentChoice != FOR_RENT && forRentChoice != FOR_SALE && forRentChoice != SKIP);
+        if (forRentChoice == FOR_RENT){
             int counter = 0;
             for (int i = 0; i < this.properties.length; i++){
                 if (this.properties[i].getForRent()){
@@ -527,7 +543,7 @@ public class RealEstate {
                 }
             }
                 wantedProperties = forRentProperties;
-        } else if (forRentChoice == 2){
+        } else if (forRentChoice == FOR_SALE){
             int counter = 0;
             for (int i = 0; i < this.properties.length; i++){
                 if (!this.properties[i].getForRent()){
@@ -554,12 +570,12 @@ public class RealEstate {
         System.out.println("If you don't care - press -999");
         do {
             typeChoice = scanner.nextInt();
-            if (typeChoice != 1 && typeChoice != 2 && typeChoice != 3 && typeChoice != SKIP){
+            if (typeChoice != REGULAR_APARTMENT && typeChoice != PENTHOUSE && typeChoice != PRIVATE_HOUSE && typeChoice != SKIP){
                 System.out.println("Invalid choice");
             }
-        } while (typeChoice != 1 && typeChoice != 2 && typeChoice != 3 && typeChoice != SKIP);
+        } while (typeChoice != REGULAR_APARTMENT && typeChoice != PENTHOUSE && typeChoice != PRIVATE_HOUSE && typeChoice != SKIP);
 
-        if (typeChoice == 1){
+        if (typeChoice == REGULAR_APARTMENT){
             int counter = 0;
             for (int i = 0; i < wantedProperties.length; i++){
                 if (Objects.equals(wantedProperties[i].getType(), "regular apartment")){
@@ -577,7 +593,7 @@ public class RealEstate {
                 }
             }
             wantedProperties = regularApartments;
-        } else if (typeChoice == 2){
+        } else if (typeChoice == PENTHOUSE){
             int counter = 0;
             for (int i = 0; i < wantedProperties.length; i++){
                 if (Objects.equals(wantedProperties[i].getType(), "penthouse")){
@@ -595,7 +611,7 @@ public class RealEstate {
                 }
             }
             wantedProperties = penthouses;
-        } else if (typeChoice == 3){
+        } else if (typeChoice == PRIVATE_HOUSE){
             int counter = 0;
             for (int i = 0; i < wantedProperties.length; i++){
                 if (Objects.equals(wantedProperties[i].getType(), "private house")){
