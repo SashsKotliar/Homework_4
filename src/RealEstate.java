@@ -513,7 +513,7 @@ public class RealEstate {
         }
     }
 
-    public Property[] search(){
+    public Property[]search(){
         Scanner scanner = new Scanner(System.in);
         Property [] wantedProperties = this.properties;
         System.out.println("Do you search a property for rent or for sale?");
