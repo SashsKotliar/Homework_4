@@ -499,13 +499,14 @@ public class RealEstate {
             do {
                 System.out.println("Enter the number of the property you want to delete: ");
                 number = scanner.nextInt();
-            } while (number < 0 || number > usersProperties(user).length);
+            } while (number < 1 || number > usersProperties(user).length);
             Property propertyToDelete = usersProperties(user)[number - 1];
             Property[] newProperties = new Property[this.properties.length - 1];
             int index = 0;
             for (int i = 0; i < this.properties.length; i++){
                 if (this.properties[i] != propertyToDelete){
                     newProperties[index] = this.properties[i];
+                    index++;
                 }
             }
            this.properties = newProperties;
